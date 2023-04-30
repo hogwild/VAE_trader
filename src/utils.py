@@ -30,5 +30,5 @@ def save_loss_plot(train_loss, valid_loss, path):
     plt.ylabel('Loss')
     plt.legend()
     plt.savefig(f'{path}loss.jpg')
-    plt.show()
+    # plt.show()
 

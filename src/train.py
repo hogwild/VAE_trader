@@ -19,8 +19,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.ConvVAE([64, 60], [32, 15]).to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 100
-batch_size = 8
+epochs = 1000
+batch_size = 128
 optimizer = optim.Adam(model.parameters(), lr=lr)
 criterion = nn.BCELoss(reduction='sum')
 # a list to save all the reconstructed images in PyTorch grid format
@@ -94,7 +94,9 @@ for epoch in range(epochs):
     valid_loss.append(valid_epoch_loss)
     # save the reconstructed images from the validation loop
     # print(recon_images.shape)
-    save_reconstructed_images(recon_images, epoch+1, result_path)
+    if (epoch+1)%100 == 0:
+        save_reconstructed_images(recon_images, epoch+1, result_path)
+        save_true_images(labels, epoch+1, result_path)
     
     # convert the reconstructed images to PyTorch image grid format
     image_grid = make_grid(recon_images.detach().cpu())
@@ -108,6 +110,6 @@ image_to_vid(grid_images, result_path)
 # save the loss plots to disk
 save_loss_plot(train_loss, valid_loss, result_path)
 # save the true label to disk
-save_true_images(labels, epoch+1, result_path)
+# save_true_images(labels, epoch+1, result_path)
 
 print('TRAINING COMPLETE')

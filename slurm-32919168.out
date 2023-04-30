@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/scratch/xg7/VAE_trader/src/train.py", line 44, in <module>
+    f = open(f"./kchart/{s}_{y}_imgs.pk", "rb")
+FileNotFoundError: [Errno 2] No such file or directory: './kchart/601857_2008_imgs.pk'
