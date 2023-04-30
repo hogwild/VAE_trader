@@ -35,6 +35,7 @@ grid_images = []
 #     root='../data', train=True, download=True, transform=transform
 # )
 symbols = ["601857", "600028"]
+
 years = range(2008, 2022)
 imgs = []
 labels = []
