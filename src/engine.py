@@ -77,5 +77,6 @@ def validate(model, dataloader, dataset, device, criterion):
             if i == int(len(dataset)/dataloader.batch_size) - 1:
                 recon_images = reconstruction
                 true_images = labels
+                input_images = imgs
     val_loss = running_loss / counter
-    return val_loss, recon_images, true_images
+    return val_loss, recon_images, true_images, input_images

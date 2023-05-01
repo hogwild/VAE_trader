@@ -10,7 +10,7 @@ import pickle as pk
 from torch.utils.data import DataLoader
 from torchvision.utils import make_grid
 from engine import train, validate
-from utils import save_reconstructed_images, save_true_images, image_to_vid, save_loss_plot
+from utils import save_reconstructed_images, save_true_images, save_input_images, save_cat_images, image_to_vid, save_loss_plot
 
 
 matplotlib.style.use('ggplot')
@@ -19,8 +19,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.ConvVAE([64, 60], [32, 15]).to(device)
 # set the learning parameters
 lr = 0.001
-epochs = 1000
-batch_size = 128
+epochs = 100
+batch_size = 16
 optimizer = optim.Adam(model.parameters(), lr=lr)
 criterion = nn.BCELoss(reduction='sum')
 # a list to save all the reconstructed images in PyTorch grid format
@@ -87,16 +87,18 @@ for epoch in range(epochs):
     train_epoch_loss = train(
         model, trainloader, trainset, device, optimizer, criterion
     )
-    valid_epoch_loss, recon_images, labels = validate(
+    valid_epoch_loss, recon_images, labels, input_images = validate(
         model, testloader, testset, device, criterion
     )
     train_loss.append(train_epoch_loss)
     valid_loss.append(valid_epoch_loss)
     # save the reconstructed images from the validation loop
-    # print(recon_images.shape)
+    # print("images for cat:", recon_images.shape, input_images.shape)
     if (epoch+1)%100 == 0:
-        save_reconstructed_images(recon_images, epoch+1, result_path)
-        save_true_images(labels, epoch+1, result_path)
+        # save_reconstructed_images(recon_images, epoch+1, result_path)
+        # save_true_images(labels, epoch+1, result_path)
+        # save_input_images(input_images, epoch+1, result_path)
+        save_cat_images(recon_images, labels, epoch+1, result_path)
     
     # convert the reconstructed images to PyTorch image grid format
     image_grid = make_grid(recon_images.detach().cpu())

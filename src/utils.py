@@ -2,6 +2,7 @@
 
 import imageio
 import numpy as np
+from torch import cat
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
@@ -19,6 +20,16 @@ def save_reconstructed_images(recon_images, epoch, path):
 
 def save_true_images(true_images, epoch, path):
     save_image(true_images.cpu(), f"{path}output{epoch}_true.jpg")
+
+
+def save_input_images(input_images, epoch, path):
+    save_image(input_images.cpu(), f"{path}input{epoch}.jpg")
+
+
+def save_cat_images(recon_images, true_images, epoch, path):
+    imgs = cat((recon_images, true_images), 2)
+    save_image(imgs.cpu(), f"{path}_output{epoch}.jpg")
+
 
 
 def save_loss_plot(train_loss, valid_loss, path):
